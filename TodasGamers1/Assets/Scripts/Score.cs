@@ -1,23 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour {
 
-#region Variables
-    public Text score;
-    public Text scoreToWinText;
-    public int scoreToWin;
-    public Text weight;
-    public Slider weightSlider;
-    public float timeToLoseWeight;
-    public LevelManager levelmanager;
-    public Text deaths;
+#region Variables Publicas (Se ven en la interfaz)
+    public Text score;  //Objeto Texto del marcador de croquetas
+    public Text scoreToWinText;  //Objeto Texto con el marcador de croquetas para ganar
+    public int scoreToWin;  //Entero con las croquetas comidas
+    public Text weight;  //Objeto Texto con el peso
+    public Slider weightSlider;  //Objeto Slider para sincronizar el slider con el texto del peso
+    public float timeToLoseWeight;  //float para el tiempo que tarda en perder peso, aunque al final es semi-random
+    public LevelManager levelmanager;  //Objeto LevelManager para gestionar las escenas
+    public Text deaths;  //Objeto Texto para el marcador de muertes
     [Tooltip("1: Comer    2: Morir")]
-    public AudioClip[] PUGSounds;
+    public AudioClip[] PUGSounds;  //Array de clips de audio con los sonidos de comer [0] y morir [1]
+    #endregion
 
+#region Variables Privadas (No se ven en la interfaz, si no los serializas)
     private int weightToLose = 10;
     private int currentScore;
     private float currentWeight=3f;
@@ -26,42 +26,46 @@ public class Score : MonoBehaviour {
     private int currentDeaths;
     private AudioSource audiosource;
     private CroquetaBehaviour croquetaBehaviour;
-    #endregion
+#endregion
 
-    private void Awake() {
-        
-    }
 
+    //Este metodo se llama al iniciar el nivel y se suele utilizar para inicializar las variables
     void Start () {
         scoreToWinText.text = scoreToWin.ToString();
         weight.text = currentWeight.ToString();
         weightSlider.value = currentWeight;
         PC = GetComponent<PugController>();
-        deaths.text = PlayerPrefs.GetInt("Deaths",0).ToString();
+        deaths.text = PlayerPrefs.GetInt("Deaths",0).ToString(); //PlayerPrefs es un tipo de variables que son persistentes
 
+        //Asignamos el audio de la muerte y lo activamos
         audiosource = GetComponent<AudioSource>();
         audiosource.clip = PUGSounds[1];
         audiosource.Play();
     }
 
 
+    //Llamada una vez cada frame
     void Update () {
 
+        //Comprobamos si hemos ganado
         if (currentScore >= scoreToWin) {
             Win();
         }
 
+        //Comprobamos si hemos perdido
         if (currentWeight >= weightToLose || currentWeight<1) {
 
             Lose();
         }
 
+        //Vemos si pierde peso
         if (IsTimeToLoseWeight() && firstCroqueta) {
             ChangeWeigth(-1f);
         }
 	}
     
 
+    //Metodo cuando perdemos
     public void Lose() {
         PlayerPrefs.SetInt("Deaths", PlayerPrefs.GetInt("Deaths", 0) + 1);
         levelmanager.LoadLevel(SceneManager.GetActiveScene().name);
@@ -69,13 +73,18 @@ public class Score : MonoBehaviour {
     }
 
 
+    //Metodo cuando ganamos
     protected void Win() {
         levelmanager.LoadNextLevel();
     }
 
+
+    //Cuando colisionamos con otro objeto que este triggered
     private void OnTriggerEnter2D(Collider2D collision) {
 
+        //Comprobamos si hemos colisionado con un objeto con el Tag "Croqueta"
         if (collision.gameObject.CompareTag("Croqueta")) {
+            //Asignamos el sonido de comer croquetas y lo activamos
             audiosource.clip = PUGSounds[0];
             audiosource.Play();
 
@@ -91,12 +100,14 @@ public class Score : MonoBehaviour {
     }
 
 
+    //Metodo para cambiar el peso del pug que le enviamos cuanto sube o baja
     protected void ChangeWeigth(float change) {
 
         currentWeight += change;
         weight.text = currentWeight.ToString();
-        weightSlider.value = currentWeight;
+        weightSlider.value = currentWeight;  //Esto para actualizar el slider
 
+        //Si pesa mas de 8kg no puede saltar
         if (currentWeight < 8) {
             PC.jumpSpeed = 350f;
         } else {
@@ -107,6 +118,8 @@ public class Score : MonoBehaviour {
          * A partir del < 3  es cuando va ganando velocidad y perdiendo volumen
          * A partir de > 3 es cuando va perdiendo velocidad y ganando volumen
          */
+
+        //Switch con los casos del 1 al 9 con sus vainas
         switch ((int)currentWeight) {
 
             case 1:
@@ -148,14 +161,14 @@ public class Score : MonoBehaviour {
 
             default:
                 break;
-
-
         }
         
     }
 
 
+    //Metodo que nos dice cuando perdemos peso, devolviendonoslo como bool
     protected bool IsTimeToLoseWeight() {
+        //Mira esto es un copypaste que flipas pero es el sistema mas facil para hacer un spawner
 
         float meanLoseDelay = timeToLoseWeight;
         float losePerSecond = 1 / meanLoseDelay;

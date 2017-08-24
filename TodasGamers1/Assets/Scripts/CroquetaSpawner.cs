@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CroquetaSpawner : MonoBehaviour {
 
@@ -8,10 +6,6 @@ public class CroquetaSpawner : MonoBehaviour {
     public float maxTimeBetweenCroqueta;
     public GameObject croqueta;
 
-	void Start () {
-		
-	}
-	
 
 	void Update () {
 
@@ -20,6 +14,8 @@ public class CroquetaSpawner : MonoBehaviour {
         }
     }
 
+
+    //Spawnea la croqueta
     protected void SpawnCroqueta() {
         Vector3 spawnPoint = new Vector3(Random.Range(-7f, 7f), 10f, 1f);
         GameObject croquetaSpawned = Instantiate(croqueta) as GameObject;
@@ -27,6 +23,8 @@ public class CroquetaSpawner : MonoBehaviour {
         croquetaSpawned.transform.position = spawnPoint;
     }
 
+
+    //Nos dice si puede spawnear o no
     protected bool IsTimeToSpawn() {
 
         float meanSpawnDelay = Random.Range(minTimeBetweenCroqueta, maxTimeBetweenCroqueta);

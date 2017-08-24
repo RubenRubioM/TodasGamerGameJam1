@@ -5,18 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class CroquetaBehaviour : MonoBehaviour {
 
-
+    //Creo que nada de esta clase funciona pero bueno se intento meter particulas pero no se pudo
     private ParticleSystem ps;
-
-	void Start () {
-
-
-    }
-	
-
-	void Update () {
-        
-    }
 
     private void OnTriggerEnter2D(Collider2D collision) {
 

@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Reseter : MonoBehaviour {
-
-	// Use this for initialization
+    
+    //Un script que simplemente resetea el numero de muertes cuando entras al menu
 	void Start () {
         PlayerPrefs.SetInt("Deaths", 0);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
