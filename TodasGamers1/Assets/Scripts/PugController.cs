@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PugController : MonoBehaviour {
 
     public float speed;
     public float jumpSpeed;
+    
 
     private Animator animator;
     private Rigidbody2D rigi;
     private SpriteRenderer srPUG;
     private bool canJump;
+    private Score score;
 
 	void Start () {
         animator = GetComponent<Animator>();
         rigi = GetComponent<Rigidbody2D>();
         srPUG = GetComponent<SpriteRenderer>();
+        score = GetComponent<Score>();
 	}
 	
 
@@ -58,6 +63,9 @@ public class PugController : MonoBehaviour {
         if (collision.gameObject.CompareTag("Walkable")) {
             canJump = true;
             StopAnimation("IsJumping");
+        }
+        if (collision.gameObject.CompareTag("Spike")) {
+            score.Lose();
         }
     }
 
