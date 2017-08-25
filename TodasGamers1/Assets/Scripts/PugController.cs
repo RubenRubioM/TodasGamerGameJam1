@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PugController : MonoBehaviour {
+
+#region Variables
 
     public float speed;
     public float jumpSpeed;
@@ -16,8 +15,9 @@ public class PugController : MonoBehaviour {
     private SpriteRenderer srPUG;
     private bool canJump;
     private Score score;
+#endregion
 
-	void Start () {
+    void Start () {
         animator = GetComponent<Animator>();
         rigi = GetComponent<Rigidbody2D>();
         srPUG = GetComponent<SpriteRenderer>();
