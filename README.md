@@ -7,4 +7,4 @@ Podeis usar todos assets como querais
 
 
 NOTAS: Hice un sistema demasiado raro para el tema de spawnear objetos cuando realmente una forma muy facil de hacerla es con Coroutines como en 
-[ESTE CASO](https://github.com/Brackeys/Fruit-Ninja-Replica/blob/master/Fruit%20Ninja%20Replica/Assets/Scripts/Fruit.cs)
+[ESTE CASO](https://github.com/Brackeys/Fruit-Ninja-Replica/blob/master/Fruit%20Ninja%20Replica/Assets/Scripts/FruitSpawner.cs)
